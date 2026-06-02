@@ -8,8 +8,13 @@ discover foreign-key relations, and run ad-hoc SQL — without leaving the
 terminal.
 
 The tool was designed to feel like `psql` / `mysql -e` but with persistent
-named connections, multi-database and multi-schema navigation, and
-human-friendly output (tables, JSON, CSV).
+named connections, multi-database and multi-schema navigation, and output
+that is **equally friendly to humans and to AI agents**. By default the
+output is tab-separated (TSV) on stdout and all status messages go to
+stderr, so an LLM (or any `awk` / `jq` pipeline) can consume it
+mechanically without parsing decorations. Switch to JSON for structured
+consumption, or to the pretty table for human terminals. The format is a
+single persistent preference set with `dbia config format`.
 
 ---
 
