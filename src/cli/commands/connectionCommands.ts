@@ -12,9 +12,10 @@ export function registerConnectionCommands(program: Command, container: Containe
     .alias('c')
     .description('Manage database connections');
 
-  // dbia connection add
+  // dbia connection add (alias: a)
   connectionCmd
     .command('add')
+    .alias('a')
     .description('Create a new connection')
     .option('-n, --name <name>', 'Connection name')
     .option('-t, --type <type>', 'Database type (mysql, postgres)')
@@ -146,9 +147,10 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection list
+  // dbia connection list (alias: ls)
   connectionCmd
     .command('list')
+    .alias('ls')
     .description('List all connections')
     .action(async () => {
       try {
@@ -183,9 +185,10 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection show
+  // dbia connection show (alias: v)
   connectionCmd
     .command('show <name>')
+    .alias('v')
     .description('Show details of a connection')
     .action(async (name) => {
       try {
@@ -213,7 +216,7 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection remove
+  // dbia connection remove (alias: rm)
   connectionCmd
     .command('remove <name>')
     .alias('rm')
@@ -236,7 +239,7 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection rename
+  // dbia connection rename (alias: mv)
   connectionCmd
     .command('rename <oldName> <newName>')
     .alias('mv')
@@ -253,9 +256,10 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection use
+  // dbia connection use (alias: u)
   connectionCmd
     .command('use <name>')
+    .alias('u')
     .description('Select the active connection')
     .action(async (name) => {
       try {
@@ -267,9 +271,10 @@ export function registerConnectionCommands(program: Command, container: Containe
       }
     });
 
-  // dbia connection current
+  // dbia connection current (alias: cur)
   connectionCmd
     .command('current')
+    .alias('cur')
     .description('Show the active connection')
     .action(async () => {
       try {

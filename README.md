@@ -359,7 +359,7 @@ exposed on `query`.
 
 ## Command aliases
 
-For fast typing, every common subcommand has a short alias.
+For fast typing, every command and subcommand has a short alias.
 
 | Long | Short |
 |------|-------|
@@ -370,9 +370,25 @@ For fast typing, every common subcommand has a short alias.
 | `relations` | `rel` |
 | `search` | `s` |
 | `query` | `q` |
+| `config` | `cfg` |
+| `connection add` | `connection a` |
+| `connection list` | `connection ls` |
+| `connection show` | `connection v` |
 | `connection remove` | `connection rm` |
 | `connection rename` | `connection mv` |
+| `connection use` | `connection u` |
+| `connection current` | `connection cur` |
+| `db list` | `db ls` |
+| `db use` | `db u` |
+| `db current` | `db cur` |
 | `db schema` | `db sch` |
+| `db schema list` | `db schema ls` |
+| `db schema use` | `db schema u` |
+| `db schema current` | `db schema cur` |
+| `table list` | `table ls` |
+| `table show` | `table v` |
+| `config format` | `config fmt` |
+| `config reset` | `config rst` |
 
 All previous single-letter shortcuts (`q` for `query`, `rm` for `remove`)
 are preserved.

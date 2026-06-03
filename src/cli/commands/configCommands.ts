@@ -8,6 +8,7 @@ import { OUTPUT_FORMATS, DEFAULT_OUTPUT_FORMAT } from '../../domain/entities.js'
 export function registerConfigCommands(program: Command, container: Container): void {
   const configCmd = program
     .command('config')
+    .alias('cfg')
     .description('Manage CLI configuration (persisted in the local SQLite store)');
 
   // dbia config format [value]
@@ -15,6 +16,7 @@ export function registerConfigCommands(program: Command, container: Container): 
   //   - <plain|json|table> → set the persistent output format
   configCmd
     .command('format [value]')
+    .alias('fmt')
     .description(
       `Get or set the default output format. Valid values: ${OUTPUT_FORMATS.join(', ')}. ` +
         `Default: ${DEFAULT_OUTPUT_FORMAT}.`,
@@ -41,9 +43,10 @@ export function registerConfigCommands(program: Command, container: Container): 
       }
     });
 
-  // dbia config reset
+  // dbia config reset (alias: rst)
   configCmd
     .command('reset')
+    .alias('rst')
     .description('Reset the output format to the default (plain)')
     .action(async () => {
       try {

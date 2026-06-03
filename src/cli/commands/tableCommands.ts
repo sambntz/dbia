@@ -5,7 +5,7 @@ import { Logger } from '../../shared/utils/logger.js';
 import { Renderer } from '../../shared/formatters/Renderer.js';
 
 export function registerTableCommands(program: Command, container: Container): void {
-  // dbia table list
+  // dbia table list (alias: ls)
   const tableCmd = program
     .command('table')
     .alias('t')
@@ -13,6 +13,7 @@ export function registerTableCommands(program: Command, container: Container): v
 
   tableCmd
     .command('list')
+    .alias('ls')
     .description('List all tables in the active database')
     .action(async () => {
       try {
@@ -31,9 +32,10 @@ export function registerTableCommands(program: Command, container: Container): v
       }
     });
 
-  // dbia table show
+  // dbia table show (alias: v)
   tableCmd
     .command('show <name>')
+    .alias('v')
     .description('Show details (columns, indexes, FKs) of a table')
     .action(async (name) => {
       try {

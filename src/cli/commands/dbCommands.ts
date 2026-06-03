@@ -10,9 +10,10 @@ export function registerDbCommands(program: Command, container: Container): void
     .alias('d')
     .description('Manage databases within the active connection');
 
-  // dbia db list
+  // dbia db list (alias: ls)
   dbCmd
     .command('list')
+    .alias('ls')
     .description('List available databases')
     .action(async () => {
       try {
@@ -39,9 +40,10 @@ export function registerDbCommands(program: Command, container: Container): void
       }
     });
 
-  // dbia db use
+  // dbia db use (alias: u)
   dbCmd
     .command('use <name>')
+    .alias('u')
     .description('Select the active database')
     .action(async (name) => {
       try {
@@ -53,9 +55,10 @@ export function registerDbCommands(program: Command, container: Container): void
       }
     });
 
-  // dbia db current
+  // dbia db current (alias: cur)
   dbCmd
     .command('current')
+    .alias('cur')
     .description('Show the active database')
     .action(async () => {
       try {
@@ -80,9 +83,10 @@ export function registerDbCommands(program: Command, container: Container): void
     .alias('sch')
     .description('Manage schemas within the active database (PostgreSQL)');
 
-  // dbia db schema list
+  // dbia db schema list (alias: ls)
   schemaCmd
     .command('list')
+    .alias('ls')
     .description('List available schemas in the active database')
     .action(async () => {
       try {
@@ -118,9 +122,10 @@ export function registerDbCommands(program: Command, container: Container): void
       }
     });
 
-  // dbia db schema use
+  // dbia db schema use (alias: u)
   schemaCmd
     .command('use <name>')
+    .alias('u')
     .description('Select the active schema')
     .action(async (name) => {
       try {
@@ -132,9 +137,10 @@ export function registerDbCommands(program: Command, container: Container): void
       }
     });
 
-  // dbia db schema current
+  // dbia db schema current (alias: cur)
   schemaCmd
     .command('current')
+    .alias('cur')
     .description('Show the active schema')
     .action(async () => {
       try {
