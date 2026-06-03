@@ -119,6 +119,7 @@ end-to-end.
 - [What it looks like](#what-it-looks-like)
 - [Why DBIA?](#why-dbia)
 - [Features](#features)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [How it works](#how-it-works)
@@ -209,6 +210,23 @@ design decision, not an afterthought.
   field with sensible defaults, and passwords are always masked.
 - **Short aliases** — every common command has a one-letter alias for
   fast typing.
+
+---
+
+## Requirements
+
+- **Node.js >= 20.0.0** (LTS recommended) — required by `tsconfig`
+  (`ES2022` / `NodeNext`) and `vitest@1.6`. Node 18 may work but is not
+  officially supported.
+- **npm >= 9** — comes bundled with Node 20. Used for `install`, `build`,
+  and `link`.
+
+That's it. Verify with:
+
+```bash
+node --version   # v20.x or newer
+npm --version    # 9.x or newer
+```
 
 ---
 
