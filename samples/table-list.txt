@@ -1,0 +1,9 @@
+#	name
+1	customers
+2	order_items
+3	orders
+4	payments
+5	reviews
+6	service_categories
+7	services
+8	users

@@ -1,0 +1,25 @@
+
+# Table: services
+
+# Columns
+name	type	nullable	pk	default
+id	bigint	no	*	
+user_id	bigint	no		
+category_id	bigint	no		
+title	varchar(255)	no		
+description	text	yes		
+duration_minutes	int	no		
+price	decimal(10,2)	no		
+active	tinyint(1)	yes		1
+created_at	timestamp	yes		CURRENT_TIMESTAMP
+
+# Indexes
+name	columns	unique
+fk_services_category	category_id	no
+fk_services_user	user_id	no
+PRIMARY	id	yes
+
+# Foreign Keys
+constraint	column	references_table	references_column
+fk_services_category	category_id	service_categories	id
+fk_services_user	user_id	users	id

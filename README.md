@@ -1,16 +1,17 @@
 # dbia — Database introspection for AI agents and developers
 
-`DBIA` is a database introspection CLI designed primarily for AI agents to
-discover, navigate, and understand the structure of MySQL and PostgreSQL
-databases. It is also perfectly usable by humans in a terminal or server
+`DBIA` is a database introspection CLI that lets AI agents explore MySQL
+and PostgreSQL databases **incrementally** — calling only the schema and
+data they need, when they need it, instead of receiving a full dump
+upfront. It is also perfectly usable by humans in a terminal or server
 environment.
 
 Unlike general-purpose SQL clients that format output for human eyes,
 `DBIA` produces **machine-readable output by default** (tab-separated on
-stdout, status messages on stderr). This lets an LLM — or any `awk`/`jq`
-pipeline — consume the data mechanically without parsing decorations.
-Switch to JSON for structured consumption, or to a pretty table for a
-human terminal.
+stdout, status messages on stderr). This lets AI agents, scripts, and
+shell pipelines consume the data mechanically without parsing
+decorations. Switch to JSON for structured consumption, or to a pretty
+table for a human terminal.
 
 ---
 
@@ -38,8 +39,84 @@ human terminal.
 
 ---
 
+## What it looks like
+
+A few `dbia` calls are usually enough for an agent (or a script) to
+orient itself inside a database it has never seen. The whole
+conversation can stay in the terminal:
+
+```bash
+$ dbia table list
+
+#	name
+1	customers
+2	order_items
+3	orders
+4	payments
+5	reviews
+6	service_categories
+7	services
+8	users
+
+$ dbia table show services
+
+# Table: services
+
+# Columns
+name	type	nullable	pk	default
+id	bigint	no	*	
+user_id	bigint	no		
+category_id	bigint	no		
+title	varchar(255)	no		
+description	text	yes		
+duration_minutes	int	no		
+price	decimal(10,2)	no		
+active	tinyint(1)	yes		1
+created_at	timestamp	yes		CURRENT_TIMESTAMP
+
+# Foreign Keys
+constraint	column	references_table	references_column
+fk_services_category	category_id	service_categories	id
+fk_services_user	user_id	users	id
+
+$ dbia relations
+
+constraint	source_column	references_table	references_column
+fk_services_user	services.user_id	users	id
+fk_services_category	services.category_id	service_categories	id
+fk_orders_customer	orders.customer_id	customers	id
+fk_order_items_order	order_items.order_id	orders	id
+fk_order_items_service	order_items.service_id	services	id
+fk_payments_order	payments.order_id	orders	id
+fk_reviews_customer	reviews.customer_id	customers	id
+fk_reviews_service	reviews.service_id	services	id
+
+$ dbia query "SELECT s.title, s.price, c.name AS category FROM services s JOIN service_categories c ON s.category_id = c.id WHERE s.active = 1 ORDER BY s.price DESC LIMIT 3" --json
+```
+
+```json
+[
+  { "title": "REST API Development", "price": "250.00", "category": "Software Development" },
+  { "title": "Landing Page Design",   "price": "180.00", "category": "Design" },
+  { "title": "Database Design",       "price": "120.00", "category": "Software Development" }
+]
+```
+
+No full schema dump, no prompt-engineering gymnastics — just a few
+small, focused calls, and the agent knows exactly what it is dealing
+with. The same sequence works unchanged from a shell script, a CI job,
+or a thin MCP wrapper.
+
+The full, unmodified outputs of these commands (plus the SQL that
+built the demo database) live in [`samples/`](./samples). See
+[`samples/README.md`](./samples/README.md) to reproduce the demo
+end-to-end.
+
+---
+
 ## Table of contents
 
+- [What it looks like](#what-it-looks-like)
 - [Why DBIA?](#why-dbia)
 - [Features](#features)
 - [Installation](#installation)
@@ -86,11 +163,24 @@ dbia query "..."        → fetch real data
 An agent can discover the database **progressively**, calling only what it
 needs at each step. This scales far better than dumping everything upfront.
 
-You could use `psql` or `mysql` — those are excellent tools. But they are
-designed for human eyes: decorated output, interactive pagers, colored
-tables, status interleaved with data. `dbia` is designed for **both**
-humans and agents, with stdout=parseable data and stderr=messages as a
-first-class decision, not an afterthought.
+You could use `psql` or `mysql` — those are excellent tools. But they
+are designed for human eyes: decorated output, interactive pagers,
+colored tables, status interleaved with data. `dbia` flips that around
+with a deliberate contract:
+
+```
+Most CLIs                          DBIA
+─────────                          ────
+stdout = data                      stdout = data
+        + logs                     stderr = messages
+        + decorations
+```
+
+`stdout` is always a single, parseable, well-formed stream. You can
+pipe `dbia` into `awk`, `cut`, `jq`, or hand the result straight to a
+model without preprocessing. Status messages — warnings, info, errors
+— go to `stderr` so they never get in the way. This is a first-class
+design decision, not an afterthought.
 
 ---
 
@@ -98,7 +188,8 @@ first-class decision, not an afterthought.
 
 - **Database introspection for agents** — discover databases, inspect
   schemas, understand table relationships, and execute queries; all
-  through a stable, predictable CLI that an LLM can call repeatedly.
+  through a stable, predictable CLI that AI agents, scripts, and shell
+  pipelines can call repeatedly.
 - **Machine-readable by default** — TSV on stdout, messages on stderr.
   Format is a single persistent preference (`plain` | `json` | `table`).
 - **Multiple persistent connections** — save and switch between as many
@@ -363,7 +454,7 @@ Examples:
 dbia config format
 # → plain
 
-# Switch to JSON for jq / an LLM consumer
+# Switch to JSON for jq / AI agents / scripts
 dbia config format json
 dbia connection list | jq '.[].name'
 

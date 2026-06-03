@@ -1,0 +1,17 @@
+[
+  {
+    "title": "REST API Development",
+    "price": "250.00",
+    "category": "Software Development"
+  },
+  {
+    "title": "Landing Page Design",
+    "price": "180.00",
+    "category": "Design"
+  },
+  {
+    "title": "Database Design",
+    "price": "120.00",
+    "category": "Software Development"
+  }
+]
