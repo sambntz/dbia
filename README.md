@@ -137,6 +137,7 @@ end-to-end.
 - [Configuration](#configuration)
 - [Security](#security)
 - [Limitations](#limitations)
+- [Agent Skills](#agent-skills)
 - [Development](#development)
 
 ---
@@ -589,6 +590,39 @@ unrecoverable and connections will have to be re-added.
   `DBIA_MASTER_KEY` or `~/.dbia/master.key`.
 - No integration tests against real MySQL or PostgreSQL servers. The
   CLI is the only way to exercise the drivers end-to-end.
+
+---
+
+## Agent Skills
+
+A ready-to-use **DBIA skill** is included in the `skill/dbia/` folder, following 
+the [Agent Skills open specification](https://agentskills.io/specification). This 
+skill is designed to integrate `dbia` into AI agent workflows (Claude Code, Cursor, 
+OpenCode, Anthropic's Claude, or any agent that supports Agent Skills).
+
+### What's included
+
+- **`SKILL.md`** — Complete metadata and instructions for using `dbia` as an agent skill.
+  Covers progressive discovery workflows, database navigation, introspection, query execution,
+  safety rules, and common command aliases. Formatted according to the open Agent Skills specification.
+
+### How to use the skill
+
+**For agent tools that support Agent Skills:**
+
+1. Copy the `skill/dbia/` folder to your agent's skills directory, or reference it directly.
+2. The skill will be automatically discovered and available for use based on the `SKILL.md` metadata.
+
+**For manual integration:**
+
+1. Reference the `SKILL.md` file to understand the `dbia` workflow and capabilities.
+2. Configure your tool or agent to call `dbia` commands as documented in the skill instructions.
+
+**For direct CLI use:**
+
+If you're already familiar with `dbia` from the terminal, no additional setup
+is needed — the skill simply documents best practices for calling `dbia`
+programmatically.
 
 ---
 
