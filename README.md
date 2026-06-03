@@ -1,25 +1,22 @@
-# dbia — Database Introspection Assistant
+# dbia — Database introspection for AI agents and developers
 
-`dbia` is a command-line tool for managing multiple database connections and
-introspecting their schemas. It targets **MySQL** and **PostgreSQL**, keeps
-your connection profiles in an encrypted local SQLite store, and gives you a
-single CLI to switch between databases, browse tables, inspect schemas,
-discover foreign-key relations, and run ad-hoc SQL — without leaving the
-terminal.
+`dbia` is a database introspection CLI designed primarily for AI agents to
+discover, navigate, and understand the structure of MySQL and PostgreSQL
+databases. It is also perfectly usable by humans in a terminal or server
+environment.
 
-The tool was designed to feel like `psql` / `mysql -e` but with persistent
-named connections, multi-database and multi-schema navigation, and output
-that is **equally friendly to humans and to AI agents**. By default the
-output is tab-separated (TSV) on stdout and all status messages go to
-stderr, so an LLM (or any `awk` / `jq` pipeline) can consume it
-mechanically without parsing decorations. Switch to JSON for structured
-consumption, or to the pretty table for human terminals. The format is a
-single persistent preference set with `dbia config format`.
+Unlike general-purpose SQL clients that format output for human eyes,
+`dbia` produces **machine-readable output by default** (tab-separated on
+stdout, status messages on stderr). This lets an LLM — or any `awk`/`jq`
+pipeline — consume the data mechanically without parsing decorations.
+Switch to JSON for structured consumption, or to a pretty table for a
+human terminal.
 
 ---
 
 ## Table of contents
 
+- [Why DBIA?](#why-dbia)
 - [Features](#features)
 - [Installation](#installation)
 - [Quick start](#quick-start)
@@ -42,8 +39,44 @@ single persistent preference set with `dbia config format`.
 
 ---
 
+## Why DBIA?
+
+Most AI agents interact with databases in one of two ways:
+
+**Option 1 — Dump the full schema into the prompt**
+Problem: enormous context, expensive, immediately stale.
+
+**Option 2 — MCP Server**
+Problem: complex setup, requires specific integrations, not every agent
+supports it.
+
+`dbia` proposes something in between:
+
+```
+dbia table list         → discover what tables exist
+dbia table show users   → inspect one table's columns
+dbia relations          → understand foreign keys
+dbia query "..."        → fetch real data
+```
+
+An agent can discover the database **progressively**, calling only what it
+needs at each step. This scales far better than dumping everything upfront.
+
+You could use `psql` or `mysql` — those are excellent tools. But they are
+designed for human eyes: decorated output, interactive pagers, colored
+tables, status interleaved with data. `dbia` is designed for **both**
+humans and agents, with stdout=parseable data and stderr=messages as a
+first-class decision, not an afterthought.
+
+---
+
 ## Features
 
+- **Database introspection for agents** — discover databases, inspect
+  schemas, understand table relationships, and execute queries; all
+  through a stable, predictable CLI that an LLM can call repeatedly.
+- **Machine-readable by default** — TSV on stdout, messages on stderr.
+  Format is a single persistent preference (`plain` | `json` | `table`).
 - **Multiple persistent connections** — save and switch between as many
   MySQL or PostgreSQL servers as you need.
 - **Encrypted local storage** — passwords are encrypted with AES-256-GCM
@@ -57,10 +90,6 @@ single persistent preference set with `dbia config format`.
 - **Search** — find tables by name across the active database.
 - **Ad-hoc SQL** — execute queries on the active database, with output as
   a table, JSON, or CSV and a configurable row cap.
-- **AI-friendly by default** — output is tab-separated (TSV) out of the
-  box, so AI agents and pipes get clean parseable text on stdout. Switch
-  to JSON for structured consumption, or to the pretty table for human
-  terminals. The format is a single persistent preference.
 - **Interactive prompts** — adding a connection walks you through each
   field with sensible defaults, and passwords are always masked.
 - **Short aliases** — every common command has a one-letter alias for
@@ -347,6 +376,8 @@ For fast typing, every common subcommand has a short alias.
 
 All previous single-letter shortcuts (`q` for `query`, `rm` for `remove`)
 are preserved.
+
+---
 
 ## Configuration
 
