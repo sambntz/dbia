@@ -1,16 +1,40 @@
 # dbia — Database introspection for AI agents and developers
 
-`dbia` is a database introspection CLI designed primarily for AI agents to
+`DBIA` is a database introspection CLI designed primarily for AI agents to
 discover, navigate, and understand the structure of MySQL and PostgreSQL
 databases. It is also perfectly usable by humans in a terminal or server
 environment.
 
 Unlike general-purpose SQL clients that format output for human eyes,
-`dbia` produces **machine-readable output by default** (tab-separated on
+`DBIA` produces **machine-readable output by default** (tab-separated on
 stdout, status messages on stderr). This lets an LLM — or any `awk`/`jq`
 pipeline — consume the data mechanically without parsing decorations.
 Switch to JSON for structured consumption, or to a pretty table for a
 human terminal.
+
+---
+
+> ### DBIA is **not** an AI agent.
+>
+> **DBIA is a database exploration tool designed to be used by AI agents.**
+>
+> The name "Database Introspection Assistant" can be misleading. The flow
+> is *not*:
+>
+> ```
+> user → DBIA → intelligent response
+> ```
+>
+> The actual flow is:
+>
+> ```
+> agent → DBIA → database
+> ```
+>
+> DBIA is the **tool**, not the agent. It does not reason, plan, or call
+> an LLM. It exposes a stable, predictable CLI surface that an external
+> agent (Claude Code, Cursor, OpenCode, a custom script, or a human) can
+> call to discover and query databases progressively.
 
 ---
 
